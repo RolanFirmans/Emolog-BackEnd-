@@ -1,30 +1,27 @@
-const express = require('express');
-const db = require('./src/Config/db');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
+const db = require("./src/Config/db");
+const emotionsRouter = require("./src/Routes/emotion");
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
+// --- MIDDLEWARE ---
+app.use(cors());
 app.use(express.json());
 
-app.get('/api/emotions', async (req, res) => {
-    try{
-        const result = await db.query('SELECT emotion_id, emotion_name, emoji_code, description FROM tbl_emotions');
-        if (result.rows.length > 0) {
-            res.status(404).json({messege: 'Belum ada data emosi di database'});
-        }
-        res.status(200).json(result.rows);
-    }catch (error) {
-        console.error('Error saat mengambil data emosi:', err.stack);
-        res.status(500).json({message: 'Terjadi kesalahan saat mengambil data emosi'});
-    }
+// --- ROUTES ---
+app.use("/api/emotions", emotionsRouter);
+app.get("/", (req, res) => {
+  res.send("Selamat datang di Emolog API! Server berjalan.");
 });
 
-app.get('/', (req, res) => {
-    res.send('Selamat datang di Emolog API! Server berjalan.');
-});
+// --- Menjalankan Server ---
+app.listen(PORT, () => {
+  console.log(`Server Emolog API berjalan di http://localhost:${PORT}`);
 
-//Jalan Server
-app.listen(port, () => {
-    console.log(`Server berjalan di http://localhost:${port}`);
+  db.query("SELECT NOW()")
+    .then(() => console.log("Koneksi ke database berhasil."))
+    .catch((err) => console.error("Gagal memverifikasi koneksi.", err));
 });

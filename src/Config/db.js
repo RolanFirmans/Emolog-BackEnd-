@@ -1,22 +1,15 @@
-const {ppol} = require('pg');
+const { Pool } = require('pg'); 
 require('dotenv').config();
 
 const pool = new Pool({
-    user: process.env.PGUSER,
-    host: process.env.PGHOST,  
-    database: process.env.PGDATABASE,
-    password: process.env.PGPASSWORD,
-    port: process.env.PGPORT,
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_DATABASE,
+    password: process.env.DB_PASSWORD,
+    port: parseInt(process.env.DB_PORT || "5432"),
 });
 
-pool.on('connect', () => {
-    console.log('Terhubung ke PostgreSQL database');
-});
-
-pool.on('error', (err) => {
-    console.error('Kesalahan koneksi ke PostgreSQL database', err);    
-});
 
 module.exports = {
-    query : (text, params) => pool.query(text, params),
+    query: (text, params) => pool.query(text, params),
 };
