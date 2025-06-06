@@ -3,8 +3,6 @@ const router = express.Router();
 const entryController = require('../Controller/entryController');
 const { protect } = require('../middleware/authMiddleware');
 
-// Terapkan middleware 'protect' untuk semua rute di bawah ini
-// Semua request ke /api/entries/ (dan turunannya) harus menyertakan token yang valid
 const { 
     createEntry, 
     getAllEntries, 
@@ -24,6 +22,4 @@ router.route('/:id')
     .get(entryController.getEntryById) 
     .delete(entryController.deleteEntry);
     
-    // .put(entryController.updateEntry); // Bisa ditambahkan nanti
-
 module.exports = router;

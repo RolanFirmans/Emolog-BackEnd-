@@ -5,7 +5,7 @@ const Entry = require('../Model/entryModel');
 // @access  Private
 exports.createEntry = async (req, res) => {
     const { emotionId, entryText } = req.body;
-    const userId = req.user.userId; // Diambil dari token setelah melewati middleware protect
+    const userId = req.user.userId; 
 
     if (!emotionId) {
         return res.status(400).json({ message: 'Emotion ID harus diisi.' });
@@ -40,7 +40,7 @@ exports.getAllEntries = async (req, res) => {
  * @route   GET /api/entries/:id
  * @access  Private
  */
-// PASTIKAN KATA 'exports.' ADA DI DEPAN NAMA FUNGSI
+
 exports.getEntryById = async (req, res) => {
     try {
         const entryId = req.params.id;
